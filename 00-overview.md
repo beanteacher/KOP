@@ -10,10 +10,10 @@
 | # | 파일 | 내용 | 상태 |
 |---|------|------|------|
 | 00 | `00-overview.md` | 전체 로드맵 (이 파일) | ✅ 완료 |
-| 01 | `01-prd.md` | 제품 요구사항 문서 (PRD) | ✅ 완료 (v0.2) |
-| 02 | `02-user-stories.md` | 모듈별 사용자 스토리 | ⬜ 미작성 |
-| 03 | `03-feature-spec.md` | 기능 상세 명세 (모듈 A~D) | ⬜ 미작성 |
-| 04 | `04-system-architecture.md` | 기술 스택 및 시스템 구조 | ⬜ 미작성 |
+| 01 | `01-prd.md` | 제품 요구사항 문서 (PRD) | ✅ 완료 (v0.3) |
+| 02 | `02-user-stories.md` | 모듈별 사용자 스토리 | ✅ 완료 (v0.1) |
+| 03 | `03-feature-spec.md` | 기능 상세 명세 (모듈 A~D) | ✅ 완료 (v0.1) |
+| 04 | `04-system-architecture.md` | 기술 스택 및 시스템 구조 | ✅ 완료 (v0.1) |
 | 05 | `05-database-schema.md` | DB 엔티티·ERD·컬럼 명세 | ⬜ 미작성 |
 | 06 | `06-api-design.md` | REST API 엔드포인트 명세 | ⬜ 미작성 |
 | 07 | `07-ui-wireframe.md` | 주요 화면 목록·네비게이션 흐름 | ⬜ 미작성 |
