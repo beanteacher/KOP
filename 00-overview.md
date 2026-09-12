@@ -14,11 +14,11 @@
 | 02 | `02-user-stories.md` | 모듈별 사용자 스토리 | ✅ 완료 (v0.1) |
 | 03 | `03-feature-spec.md` | 기능 상세 명세 (모듈 A~D) | ✅ 완료 (v0.1) |
 | 04 | `04-system-architecture.md` | 기술 스택 및 시스템 구조 | ✅ 완료 (v0.1) |
-| 05 | `05-database-schema.md` | DB 엔티티·ERD·컬럼 명세 | ⬜ 미작성 |
-| 06 | `06-api-design.md` | REST API 엔드포인트 명세 | ⬜ 미작성 |
-| 07 | `07-ui-wireframe.md` | 주요 화면 목록·네비게이션 흐름 | ⬜ 미작성 |
-| 08 | `08-deployment.md` | 배포 전략·인프라·CI/CD | ⬜ 미작성 |
-| 09 | `09-security.md` | 인증·인가·암호화·접근 제어 | ⬜ 미작성 |
+| 05 | `05-database-schema.md` | DB 엔티티·ERD·컬럼 명세 | ✅ 완료 (v0.1) |
+| 06 | `06-api-design.md` | REST API 엔드포인트 명세 | ✅ 완료 (v0.1) |
+| 07 | `07-ui-wireframe.md` | 주요 화면 목록·네비게이션 흐름 | ✅ 완료 (v0.1) |
+| 08 | `08-deployment.md` | 배포 전략·인프라·CI/CD | ✅ 완료 (v0.1) |
+| 09 | `09-security.md` | 인증·인가·암호화·접근 제어 | ✅ 완료 (v0.1) |
 
 ---
 
@@ -59,10 +59,10 @@ dev·staging·prod 환경 구성, 서버 스펙, CI/CD 파이프라인을 정의
 
 작업 재개 전 아래 항목을 먼저 결정한다.
 
-- [ ] 세금계산서 공인 중계사업자 선택 (이카운트·더존·스마트빌 등)
-- [ ] 요금제 모델 (무료/유료 기준)
-- [ ] 도면 편집기 방식 (자체 개발 vs Fabric.js/Konva 등 오픈소스)
-- [ ] 클라우드 저장소 선택 (NCP·KT Cloud vs AWS 서울)
-- [ ] 배포 방식 (SaaS 멀티테넌트 vs 업체별 독립 설치)
+- [x] 세금계산서 공인 중계사업자 선택 → 미사용, 홈택스 bulk 엑셀 방식 (Phase 2에서 전략 패턴으로 전환 가능, `04-system-architecture.md` 참고)
+- [x] 요금제 모델 → Free/Pro/Business 3단 (`01-prd.md` §9)
+- [x] 도면 편집기 방식 → Fabric.js 확정 (자체 개발과 비교 데모로 재검증 완료 — 이동/리사이즈/회전 핸들 기본 제공 + `toJSON()` 커스텀 프로퍼티로 도메인 스키마 확장 가능)
+- [x] 클라우드 저장소 선택 → AWS 서울 리전 (S3 + CloudFront)
+- [x] 배포 방식 → SaaS 멀티테넌트
 - [ ] 공급사 엑셀 파일 수령 가능 여부 확인 → 제품 DB 구축 방식 결정
 - [ ] 바코드 없는 제품 QR 부착 범위 결정

@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ink:#ece9e0; --muted:#8d9089; --faint:#5f625c;
+    --bg:#0d0e0d; --panel:#161816; --line:rgba(236,233,224,0.08);
+    --accent: oklch(85% 0.19 128);         /* acid lime — not purple */
+    --accent-soft: oklch(85% 0.19 128 / 0.12);
+    --warn: oklch(78% 0.14 75); --warn-soft: oklch(78% 0.14 75 / 0.12);
+  }
+  .wf-root{ width:1200px; height:800px; background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Sans KR','IBM Plex Sans',sans-serif; overflow:hidden; display:flex; }
+  .wf-mono{ font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; }
+  .wf-nav{ display:flex; align-items:center; gap:10px; padding:8px 14px; margin:0 10px; border-radius:5px; font-size:13.5px; color:var(--muted); }
+  .wf-nav.active{ background:var(--panel); color:var(--ink); font-weight:600; }
+  .wf-nav.active::before{ content:''; width:5px; height:5px; border-radius:99px; background:var(--accent); }
+  .wf-nav.sub{ padding-left:32px; font-size:12.5px; }
+  .chip{ display:inline-flex; align-items:center; padding:3px 9px; border-radius:4px; font-size:11px; font-weight:500; }
+</style>
+</helmet>
+
+<div class="wf-root">
+
+  <div style="width:192px; flex:none; padding:22px 0; display:flex; flex-direction:column; border-right:1px solid var(--line);">
+    <div style="font-size:14px; font-weight:600; padding:0 22px; margin-bottom:20px; color:var(--ink);">주방설비 매니저</div>
+    <div class="wf-nav active" style="display:flex; gap:9px;"><span style="width:5px;height:5px;border-radius:99px;background:var(--accent);flex:none;"></span>대시보드</div>
+    <div class="wf-nav">영수증</div>
+    <div class="wf-nav">세금계산서</div>
+    <div class="wf-nav sub" style="color:var(--faint);">거래처</div>
+    <div class="wf-nav">도면</div>
+    <div class="wf-nav">제품 카탈로그</div>
+    <div style="flex:1;"></div>
+    <div class="wf-nav">직원 관리</div>
+    <div class="wf-nav">플랜·결제</div>
+  </div>
+
+  <div style="flex:1; min-width:0; padding:24px 32px 26px; display:flex; flex-direction:column; gap:20px; overflow:hidden;">
+
+    <div style="display:flex; align-items:baseline; justify-content:space-between;">
+      <div style="font-size:15px; font-weight:600;">대시보드</div>
+      <div class="wf-mono" style="font-size:11.5px; color:var(--faint);">2026-09-11 FRI</div>
+    </div>
+
+    <div style="display:flex; align-items:flex-end; gap:36px; padding-bottom:16px; border-bottom:1px solid var(--line);">
+      <div>
+        <div style="font-size:11.5px; color:var(--muted); margin-bottom:6px;">이번 달 공급가액</div>
+        <div class="wf-mono" style="font-size:32px; font-weight:600; letter-spacing:-.01em;">₩24,500,000</div>
+      </div>
+      <div style="display:flex; gap:26px; padding-bottom:4px;">
+        <div>
+          <div style="font-size:11px; color:var(--muted);">세금계산서</div>
+          <div class="wf-mono" style="font-size:15px; font-weight:600;">12건</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted);">영수증</div>
+          <div class="wf-mono" style="font-size:15px; font-weight:600;">38건</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted);">사용량 Free</div>
+          <div style="display:flex; align-items:center; gap:7px;">
+            <div class="wf-mono" style="font-size:15px; font-weight:600; color:var(--warn);">18/20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1; min-height:0; display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:9px;">
+        <div style="font-size:13.5px; font-weight:600;">최근 거래</div>
+        <div style="font-size:12px; color:var(--accent);">전체 보기</div>
+      </div>
+      <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
+        <thead>
+          <tr style="color:var(--faint); font-size:11px;">
+            <td style="padding:7px 6px;">구분</td>
+            <td style="padding:7px 6px;">거래처</td>
+            <td style="padding:7px 6px; text-align:right;">금액</td>
+            <td style="padding:7px 6px; text-align:right;">일자</td>
+            <td style="padding:7px 6px; text-align:right;">상태</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top:1px solid var(--line);">
+            <td style="padding:9px 6px; color:var(--muted);">세금계산서</td>
+            <td style="padding:9px 6px;">하나떡볶이</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right;">3,200,000</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right; color:var(--faint);">09.10</td>
+            <td style="padding:9px 6px; text-align:right;"><span class="chip" style="background:var(--accent-soft); color:var(--accent);">발행완료</span></td>
+          </tr>
+          <tr style="border-top:1px solid var(--line); background:var(--panel);">
+            <td style="padding:9px 6px; color:var(--muted);">영수증</td>
+            <td style="padding:9px 6px;">OO식당</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right;">185,000</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right; color:var(--faint);">09.11</td>
+            <td style="padding:9px 6px; text-align:right;"><span class="chip" style="background:rgba(255,255,255,0.06); color:var(--muted);">등록</span></td>
+          </tr>
+          <tr style="border-top:1px solid var(--line);">
+            <td style="padding:9px 6px; color:var(--muted);">세금계산서</td>
+            <td style="padding:9px 6px;">미소가든</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right;">4,650,000</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right; color:var(--faint);">09.09</td>
+            <td style="padding:9px 6px; text-align:right;"><span class="chip" style="background:var(--accent-soft); color:var(--accent);">발행완료</span></td>
+          </tr>
+          <tr style="border-top:1px solid var(--line);">
+            <td style="padding:9px 6px; color:var(--muted);">세금계산서</td>
+            <td style="padding:9px 6px;">별미분식</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right;">2,100,000</td>
+            <td class="wf-mono" style="padding:9px 6px; text-align:right; color:var(--faint);">09.07</td>
+            <td style="padding:9px 6px; text-align:right;"><span class="chip" style="background:var(--warn-soft); color:var(--warn);">대기</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="flex:none; display:flex; gap:20px; padding-top:14px; border-top:1px solid var(--line);">
+      <div style="width:280px; flex:none;">
+        <div style="font-size:12.5px; font-weight:600; margin-bottom:10px; color:var(--ink);">최근 도면</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:30px; height:22px; border-radius:3px; background:var(--panel); flex:none; border:1px solid var(--line);"></div>
+            <div style="flex:1; display:flex; justify-content:space-between; align-items:baseline;">
+              <div style="font-size:12.5px;">OO식당 배치도</div>
+              <div class="wf-mono" style="font-size:10.5px; color:var(--faint);">09.11</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:30px; height:22px; border-radius:3px; background:var(--panel); flex:none; border:1px solid var(--line);"></div>
+            <div style="flex:1; display:flex; justify-content:space-between; align-items:baseline;">
+              <div style="font-size:12.5px;">△△카페 배치도</div>
+              <div class="wf-mono" style="font-size:10.5px; color:var(--faint);">09.08</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="width:1px; background:var(--line);"></div>
+      <div style="flex:1;">
+        <div style="font-size:12.5px; font-weight:600; margin-bottom:10px; color:var(--ink);">자주 조회된 제품 · 7D</div>
+        <div style="display:flex; flex-direction:column;">
+          <div style="display:flex; align-items:center; gap:12px; padding:4px 0;">
+            <div style="flex:1; font-size:12.5px;">업소용 스텐 냄비 (L)</div>
+            <div class="wf-mono" style="font-size:11px; color:var(--muted);">26회</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; padding:4px 0;">
+            <div style="flex:1; font-size:12.5px;">후라이팬 28cm</div>
+            <div class="wf-mono" style="font-size:11px; color:var(--muted);">19회</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; padding:4px 0;">
+            <div style="flex:1; font-size:12.5px;">들통 20L</div>
+            <div class="wf-mono" style="font-size:11px; color:var(--muted);">14회</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

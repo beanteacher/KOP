@@ -138,7 +138,7 @@
 | 항목 | 내용 |
 |------|------|
 | 역할 | 로그인, 회원가입, JWT 발급·검증, 비밀번호 재설정 |
-| DB | PostgreSQL (auth 스키마): `companies`, `employees` |
+| DB | PostgreSQL (auth 스키마): `companies`, `employees`, `employee_invitations` |
 | 포트 | 3001 |
 | Kafka 발행 | `employee.invited`, `employee.registered` |
 | Kafka 구독 | — |
@@ -176,7 +176,7 @@
 | 항목 | 내용 |
 |------|------|
 | 역할 | 제품 카탈로그 CRUD, 바코드·QR 조회, 이미지 관리 |
-| DB | PostgreSQL (products 스키마): `products`, `product_images`, `product_price_history`, `product_scan_logs` |
+| DB | PostgreSQL (products 스키마): `products`, `product_variants`, `product_images`, `product_price_history`, `product_scan_logs` |
 | 포트 | 3004 |
 | Kafka 발행 | `product.viewed`, `product.created` |
 | Kafka 구독 | — |

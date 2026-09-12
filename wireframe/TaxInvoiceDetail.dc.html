@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --ink:#17181c; --muted:#6b6f7a; --faint:#a3a7b0;
+    --bg:#ffffff; --tint:#eef3ff; --tint2:#f6f7fb;
+    --line:#e9ebf0;
+    --accent: oklch(56% 0.19 265); --accent-2: oklch(56% 0.19 265 / 0.10);
+    --pos: oklch(62% 0.15 155); --pos-soft: oklch(62% 0.15 155 / 0.12);
+  }
+  .wf-root{ width:1200px; height:800px; background:var(--bg); color:var(--ink);
+    font-family:'Gothic A1',sans-serif; overflow:hidden; display:flex; }
+  .wf-num{ font-variant-numeric:tabular-nums; }
+  .wf-nav{ display:flex; align-items:center; gap:11px; padding:10px 14px; margin:0 12px; border-radius:14px; font-size:14px; font-weight:500; color:var(--muted); }
+  .wf-nav.active{ background:var(--tint); color:var(--accent); font-weight:700; }
+  .wf-nav.sub{ padding-left:38px; font-size:13px; }
+  .card{ background:var(--tint2); border-radius:20px; padding:20px; }
+  .chip{ display:inline-flex; align-items:center; padding:5px 12px; border-radius:99px; font-size:12px; font-weight:700; white-space:nowrap; }
+  .btn{ display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border-radius:99px; font-size:12.5px; font-weight:700; }
+  .btn-ghost{ background:var(--tint2); color:var(--ink); }
+  .btn-primary{ background:var(--accent); color:#fff; }
+  .col-label{ font-size:11px; font-weight:700; color:var(--faint); letter-spacing:.02em; }
+</style>
+</helmet>
+
+<div class="wf-root">
+
+  <div style="width:208px; flex:none; padding:24px 0; display:flex; flex-direction:column;">
+    <div style="font-size:16px; font-weight:900; padding:0 26px; margin-bottom:22px;">주방설비 매니저</div>
+    <div class="wf-nav">대시보드</div>
+    <div class="wf-nav">영수증</div>
+    <div class="wf-nav active">세금계산서</div>
+    <div class="wf-nav sub" style="color:var(--faint);">거래처</div>
+    <div class="wf-nav">도면</div>
+    <div class="wf-nav">제품 카탈로그</div>
+    <div style="flex:1;"></div>
+    <div class="wf-nav">직원 관리</div>
+    <div class="wf-nav">플랜·결제</div>
+  </div>
+
+  <div style="flex:1; min-width:0; padding:26px 34px 26px; display:flex; flex-direction:column; gap:16px; overflow:hidden;">
+
+    <div style="display:flex; align-items:center; gap:12px; font-size:12.5px; color:var(--faint); font-weight:600;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      세금계산서 목록
+    </div>
+
+    <div style="display:flex; align-items:baseline; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="font-size:21px; font-weight:900;">미소가든</div>
+        <span class="chip" style="background:var(--pos-soft); color:var(--pos);">완료</span>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <div class="btn btn-ghost">엑셀 다운로드</div>
+        <div class="btn btn-ghost">수정발행</div>
+        <div class="btn btn-ghost" style="color:var(--accent);">취소</div>
+        <div class="btn btn-primary">인쇄</div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:14px;">
+      <div class="card" style="flex:1; padding:14px 20px;">
+        <div style="font-size:11.5px; font-weight:700; color:var(--muted);">발행일</div>
+        <div class="wf-num" style="font-size:16px; font-weight:800; margin-top:4px;">2026.09.09</div>
+      </div>
+      <div class="card" style="flex:1; padding:14px 20px;">
+        <div style="font-size:11.5px; font-weight:700; color:var(--muted);">거래처</div>
+        <div style="font-size:16px; font-weight:800; margin-top:4px;">미소가든</div>
+      </div>
+      <div class="card" style="flex:1; padding:14px 20px;">
+        <div style="font-size:11.5px; font-weight:700; color:var(--muted);">사업자번호</div>
+        <div class="wf-num" style="font-size:16px; font-weight:800; margin-top:4px;">214-05-XXXXX</div>
+      </div>
+    </div>
+
+    <!-- items -->
+    <div style="flex:1; min-height:0; display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; gap:14px; padding:0 16px 8px;">
+        <div class="col-label" style="flex:1;">품목</div>
+        <div class="col-label" style="width:90px; text-align:center;">규격</div>
+        <div class="col-label" style="width:60px; text-align:center;">수량</div>
+        <div class="col-label" style="width:110px; text-align:center;">단가</div>
+        <div class="col-label" style="width:120px; text-align:center;">공급가액</div>
+        <div class="col-label" style="width:100px; text-align:center;">세액</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:14px; background:var(--tint2);">
+          <div style="flex:1; font-size:13.5px; font-weight:700;">업소용 냉장고 900L</div>
+          <div style="width:90px; text-align:center; font-size:12.5px; color:var(--muted);">2도어</div>
+          <div class="wf-num" style="width:60px; text-align:center; font-size:13px;">1</div>
+          <div class="wf-num" style="width:110px; text-align:center; font-size:13px;">₩4,200,000</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700;">₩4,200,000</div>
+          <div class="wf-num" style="width:100px; text-align:center; font-size:13px; color:var(--muted);">₩420,000</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:14px;">
+          <div style="flex:1; font-size:13.5px; font-weight:700;">설치비</div>
+          <div style="width:90px; text-align:center; font-size:12.5px; color:var(--faint);">—</div>
+          <div class="wf-num" style="width:60px; text-align:center; font-size:13px;">1</div>
+          <div class="wf-num" style="width:110px; text-align:center; font-size:13px;">₩450,000</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700;">₩450,000</div>
+          <div class="wf-num" style="width:100px; text-align:center; font-size:13px; color:var(--muted);">₩45,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- totals -->
+    <div style="flex:none; display:flex; gap:14px; padding-top:14px; border-top:1px solid var(--line);">
+      <div style="flex:1;">
+        <div class="col-label" style="margin-bottom:6px;">비고</div>
+        <div style="font-size:12.5px; color:var(--muted); line-height:1.6;">9월 정기 납품 · 계약서 별첨</div>
+      </div>
+      <div class="card" style="background:var(--tint); display:flex; gap:24px; align-items:center; padding:16px 24px;">
+        <div>
+          <div style="font-size:11px; color:var(--muted); font-weight:700;">공급가액</div>
+          <div class="wf-num" style="font-size:15px; font-weight:800; margin-top:3px;">₩4,650,000</div>
+        </div>
+        <div>
+          <div style="font-size:11px; color:var(--muted); font-weight:700;">세액</div>
+          <div class="wf-num" style="font-size:15px; font-weight:800; margin-top:3px;">₩465,000</div>
+        </div>
+        <div style="width:1px; height:30px; background:var(--line);"></div>
+        <div>
+          <div style="font-size:11px; color:var(--accent); font-weight:700;">합계금액</div>
+          <div class="wf-num" style="font-size:22px; font-weight:900; margin-top:3px; color:var(--accent);">₩5,115,000</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

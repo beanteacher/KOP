@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --ink:#17181c; --muted:#6b6f7a; --faint:#a3a7b0;
+    --bg:#ffffff; --tint:#eef3ff; --tint2:#f6f7fb;
+    --line:#e9ebf0;
+    --accent: oklch(56% 0.19 265); --accent-2: oklch(56% 0.19 265 / 0.10);
+    --pos: oklch(62% 0.15 155); --pos-soft: oklch(62% 0.15 155 / 0.12);
+    --warn: oklch(70% 0.16 65); --warn-soft: oklch(70% 0.16 65 / 0.15);
+    --err: oklch(58% 0.18 25); --err-soft: oklch(58% 0.18 25 / 0.12);
+  }
+  .wf-root{ width:1200px; height:800px; background:var(--bg); color:var(--ink);
+    font-family:'Gothic A1',sans-serif; overflow:hidden; display:flex; }
+  .wf-num{ font-variant-numeric:tabular-nums; }
+  .wf-nav{ display:flex; align-items:center; gap:11px; padding:10px 14px; margin:0 12px; border-radius:14px; font-size:14px; font-weight:500; color:var(--muted); }
+  .wf-nav.active{ background:var(--tint); color:var(--accent); font-weight:700; }
+  .wf-nav.sub{ padding-left:38px; font-size:13px; }
+  .card{ background:var(--tint2); border-radius:20px; padding:20px; }
+  .chip{ display:inline-flex; align-items:center; padding:5px 12px; border-radius:99px; font-size:12px; font-weight:700; white-space:nowrap; }
+  .col-label{ font-size:11px; font-weight:700; color:var(--faint); letter-spacing:.02em; }
+  .field{ display:inline-flex; align-items:center; gap:7px; padding:9px 15px; border-radius:99px; background:var(--tint2); font-size:12.5px; font-weight:600; color:var(--muted); }
+  .btn-primary{ display:inline-flex; align-items:center; gap:7px; padding:10px 18px; border-radius:99px; background:var(--accent); color:#fff; font-size:13px; font-weight:800; }
+</style>
+</helmet>
+
+<div class="wf-root">
+
+  <div style="width:208px; flex:none; padding:24px 0; display:flex; flex-direction:column;">
+    <div style="font-size:16px; font-weight:900; padding:0 26px; margin-bottom:22px;">주방설비 매니저</div>
+    <div class="wf-nav">대시보드</div>
+    <div class="wf-nav">영수증</div>
+    <div class="wf-nav active">세금계산서</div>
+    <div class="wf-nav sub" style="color:var(--faint);">거래처</div>
+    <div class="wf-nav">도면</div>
+    <div class="wf-nav">제품 카탈로그</div>
+    <div style="flex:1;"></div>
+    <div class="wf-nav">직원 관리</div>
+    <div class="wf-nav">플랜·결제</div>
+  </div>
+
+  <div style="flex:1; min-width:0; padding:26px 34px 26px; display:flex; flex-direction:column; gap:16px; overflow:hidden;">
+
+    <div style="display:flex; align-items:baseline; justify-content:space-between;">
+      <div style="font-size:21px; font-weight:900;">세금계산서</div>
+      <div class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+        세금계산서 작성
+      </div>
+    </div>
+
+    <div style="display:flex; gap:14px;">
+      <div class="card" style="flex:1.3; background:var(--tint); display:flex; flex-direction:column; gap:7px; padding:16px 20px;">
+        <div style="font-size:12.5px; font-weight:700; color:var(--accent);">이번 달 발행 합계</div>
+        <div class="wf-num" style="font-size:28px; font-weight:900; letter-spacing:-.01em;">₩24,500,000</div>
+        <div style="font-size:12px; color:var(--muted); font-weight:500;">12건 발행</div>
+      </div>
+      <div class="card" style="flex:1; display:flex; flex-direction:column; gap:7px; justify-content:center;">
+        <div style="font-size:12.5px; font-weight:700; color:var(--muted);">임시저장</div>
+        <div class="wf-num" style="font-size:23px; font-weight:900;">2건</div>
+      </div>
+      <div class="card" style="flex:1; display:flex; flex-direction:column; gap:7px; justify-content:center;">
+        <div style="font-size:12.5px; font-weight:700; color:var(--err);">취소</div>
+        <div class="wf-num" style="font-size:23px; font-weight:900;">1건</div>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:9px;">
+      <div class="field" style="flex:1; max-width:300px; color:var(--faint);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.2 15.2l4.5 4.5"></path></svg>
+        거래처 검색
+      </div>
+      <div class="field">9월 1일 – 9월 11일</div>
+      <div class="field">상태 전체</div>
+    </div>
+
+    <div style="flex:1; min-height:0; display:flex; flex-direction:column;">
+      <div style="display:flex; align-items:center; gap:14px; padding:0 16px 6px;">
+        <div class="col-label" style="flex:1;">거래처</div>
+        <div class="col-label" style="width:120px; text-align:center;">합계금액</div>
+        <div class="col-label" style="width:70px; text-align:center;">발행일</div>
+        <div class="col-label" style="width:80px; text-align:center;">상태</div>
+        <div class="col-label" style="width:60px; text-align:center;">비고</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; border-radius:14px; background:var(--tint2);">
+          <div style="flex:1; font-size:13.5px; font-weight:700;">미소가든</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700;">₩5,115,000</div>
+          <div class="wf-num" style="width:70px; text-align:center; font-size:11.5px; color:var(--faint);">09.09</div>
+          <div style="width:80px; text-align:center;"><span class="chip" style="background:var(--pos-soft); color:var(--pos);">완료</span></div>
+          <div style="width:60px; text-align:center; font-size:11px; color:var(--faint);">—</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; border-radius:14px;">
+          <div style="flex:1; font-size:13.5px; font-weight:700;">하나떡볶이</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700;">₩3,520,000</div>
+          <div class="wf-num" style="width:70px; text-align:center; font-size:11.5px; color:var(--faint);">09.10</div>
+          <div style="width:80px; text-align:center;"><span class="chip" style="background:var(--pos-soft); color:var(--pos);">완료</span></div>
+          <div style="width:60px; text-align:center; font-size:11px; color:var(--faint);">—</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; border-radius:14px; background:var(--tint2);">
+          <div style="flex:1; font-size:13.5px; font-weight:700;">청춘삼겹살</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700;">₩7,480,000</div>
+          <div class="wf-num" style="width:70px; text-align:center; font-size:11.5px; color:var(--faint);">09.03</div>
+          <div style="width:80px; text-align:center;"><span class="chip" style="background:var(--pos-soft); color:var(--pos);">완료</span></div>
+          <div style="width:60px; text-align:center; font-size:11px; color:var(--faint);">—</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; border-radius:14px;">
+          <div style="flex:1; font-size:13.5px; font-weight:700; color:var(--muted);">별미분식</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700; color:var(--muted);">₩2,310,000</div>
+          <div class="wf-num" style="width:70px; text-align:center; font-size:11.5px; color:var(--faint);">09.07</div>
+          <div style="width:80px; text-align:center;"><span class="chip" style="background:#eef0f4; color:var(--muted);">임시저장</span></div>
+          <div style="width:60px; text-align:center; font-size:11px; color:var(--faint);">—</div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; border-radius:14px; background:var(--tint2);">
+          <div style="flex:1; font-size:13.5px; font-weight:700; color:var(--muted); text-decoration:line-through; text-decoration-color:var(--err);">강남돈까스</div>
+          <div class="wf-num" style="width:120px; text-align:center; font-size:13px; font-weight:700; color:var(--muted);">₩2,145,000</div>
+          <div class="wf-num" style="width:70px; text-align:center; font-size:11.5px; color:var(--faint);">09.05</div>
+          <div style="width:80px; text-align:center;"><span class="chip" style="background:var(--err-soft); color:var(--err);">취소</span></div>
+          <div style="width:60px; text-align:center; font-size:11px; color:var(--faint);">사유</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:none; display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--line);">
+      <div style="font-size:12px; color:var(--faint);">전체 15건</div>
+      <div style="display:flex; align-items:center; gap:6px;">
+        <div class="field" style="padding:7px 13px; background:var(--tint); color:var(--accent);">1</div>
+        <div class="field" style="padding:7px 13px;">2</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
