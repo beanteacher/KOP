@@ -163,19 +163,35 @@ URL 버저닝은 두지 않는다(v1 고정). 서비스 라우팅은 `04-system-
 | GET | `/api/exports/{jobId}` | 로그인 | 내보내기 Job 상태 조회 (영수증·세금계산서·도면 공용) |
 
 #### `POST /api/receipts`
+
+`amount`는 요청 바디에 없다 — `items[]`(품목명·수량·단가)의 합계를 서버가 계산해 저장한다(품목 1개 이상 필수).
+
 ```jsonc
 // request
 {
-  "receiptDate": "2026-09-10", "amount": 85000, "vendorName": "한성식자재",
+  "receiptDate": "2026-09-10", "vendorName": "한성식자재",
   "clientId": null, "category": "MATERIAL", "memo": "9월 재료비",
+  "items": [
+    { "name": "돼지고기 앞다리살", "quantity": 10, "unitPrice": 8000 },
+    { "name": "배추", "quantity": 5, "unitPrice": 1000 }
+  ],
   "imageS3Key": "receipts/8f0e.../2026/09/original_img01.jpg"
 }
 ```
 ```jsonc
 // 201 response
-{ "data": { "id": "r-001", "receiptDate": "2026-09-10", "amount": 85000, "category": "MATERIAL", "createdAt": "2026-09-10T09:12:00Z" } }
+{
+  "data": {
+    "id": "r-001", "receiptDate": "2026-09-10", "amount": 85000, "category": "MATERIAL",
+    "items": [
+      { "id": "ri-001", "name": "돼지고기 앞다리살", "quantity": 10, "unitPrice": 8000, "amount": 80000 },
+      { "id": "ri-002", "name": "배추", "quantity": 5, "unitPrice": 1000, "amount": 5000 }
+    ],
+    "createdAt": "2026-09-10T09:12:00Z"
+  }
+}
 ```
-에러: `VALIDATION_ERROR`(미래 날짜, `amount <= 0`), `PLAN_LIMIT_EXCEEDED`(`RECEIPT_FREE_LIMIT`, Free 월 20건)
+에러: `VALIDATION_ERROR`(미래 날짜, 품목 0개, `quantity <= 0`, `unitPrice <= 0`), `PLAN_LIMIT_EXCEEDED`(`RECEIPT_FREE_LIMIT`, Free 월 20건)
 
 #### `GET /api/receipts` 응답 — 필터 합계 포함
 ```jsonc

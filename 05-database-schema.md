@@ -118,12 +118,27 @@
 | company_id | UUID | NOT NULL | |
 | created_by | UUID | NOT NULL | 등록한 직원 (`auth.employees.id`, FK 없음) |
 | receipt_date | DATE | NOT NULL | 발행일 — 미래 날짜 불가 (애플리케이션 검증) |
-| amount | BIGINT | NOT NULL, CHECK (amount > 0) | 원 단위 |
+| amount | BIGINT | NOT NULL, CHECK (amount > 0) | 원 단위 — 사용자가 직접 입력하지 않고 `receipt_items` 합계를 애플리케이션이 계산해 저장(`tax_invoices.supply_amount`와 같은 패턴, 감사 추적을 위해 계산 시점 값을 고정) |
 | vendor_name | VARCHAR(100) | NOT NULL | 거래처명 — 자유 입력 (항상 저장, 이력 보존용) |
 | client_id | UUID | NULL, FK → `clients.id` | 거래처 주소록에서 선택한 경우만 연결 |
-| category | VARCHAR(20) | NOT NULL | `MATERIAL`/`TRANSPORT`/`LABOR`/`EQUIPMENT`/`OTHER` (재료비/운반비/인건비/장비비/기타) |
+| category | VARCHAR(20) | NOT NULL | `MATERIAL`/`TRANSPORT`/`LABOR`/`EQUIPMENT`/`OTHER` (재료비/운반비/인건비/장비비/기타) — 영수증 단위(품목 단위 아님) |
 | memo | VARCHAR(200) | NULL | |
 | deleted_at | TIMESTAMPTZ | NULL | 소프트 삭제 (A-3) |
+
+---
+
+### receipt_items — 영수증 품목
+
+| 컬럼 | 타입 | 제약 | 설명 |
+|------|------|------|------|
+| receipt_id | UUID | NOT NULL, FK → `receipts.id` | |
+| name | VARCHAR(100) | NOT NULL | 품목명 |
+| quantity | INT | NOT NULL, CHECK (quantity > 0) | 수량 |
+| unit_price | BIGINT | NOT NULL, CHECK (unit_price > 0) | 단가 |
+| amount | BIGINT | NOT NULL | quantity × unit_price, 애플리케이션에서 계산 후 저장(클라이언트가 보낸 값을 신뢰하지 않음) |
+| sort_order | SMALLINT | NOT NULL, DEFAULT 0 | 표시 순서 |
+
+`tax_invoice_items`와 같은 패턴 — 영수증 1건은 품목 1개 이상을 가져야 한다(애플리케이션 검증).
 
 ---
 
