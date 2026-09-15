@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Drawings preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: {
+    background: 'var(--background)', foreground: 'var(--foreground)',
+    card: 'var(--card)', 'card-foreground': 'var(--card-foreground)',
+    primary: 'var(--primary)', 'primary-foreground': 'var(--primary-foreground)',
+    secondary: 'var(--secondary)', 'secondary-foreground': 'var(--secondary-foreground)',
+    muted: 'var(--muted)', 'muted-foreground': 'var(--muted-foreground)',
+    border: 'var(--border)', input: 'var(--input)', ring: 'var(--ring)',
+    destructive: 'var(--destructive)', 'destructive-foreground': 'var(--destructive-foreground)',
+  } } } }
+</script>
+<style>
+  :root {
+    --background:#FFFFFF; --foreground:#1F2328; --card:#FFFFFF; --card-foreground:#1F2328;
+    --primary:#0969DA; --primary-foreground:#FFFFFF; --secondary:#F6F8FA; --secondary-foreground:#33414E;
+    --muted:#F6F8FA; --muted-foreground:#59636E; --destructive:#CF222E; --destructive-foreground:#FFFFFF;
+    --success:#1A7F37; --border:#D1D9E0; --input:#F6F8FA; --ring:#0969DA;
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard',system-ui,Roboto,sans-serif;letter-spacing:-.015em;font-size:12px;}
+  h1{font-size:18px;}
+  .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+</style>
+</head>
+<body class="bg-background text-foreground">
+<div class="min-h-screen flex flex-col bg-background text-foreground">
+  <header class="border-b border-border px-6 py-2.5 flex items-center justify-between sticky top-0 z-40 bg-card">
+    <div class="flex items-center gap-2.5">
+      <div class="w-7 h-7 bg-primary flex items-center justify-center font-mono font-black text-primary-foreground text-sm">KOP</div>
+      <span class="font-bold text-sm text-foreground">주방 설비 업체 통합 관리 시스템</span>
+    </div>
+  </header>
+  <div class="flex-1 flex overflow-hidden">
+    <aside class="w-64 bg-card border-r border-border flex flex-col shrink-0">
+      <nav class="flex-1 p-2.5 space-y-1 pt-4">
+        <div class="flex items-center px-2.5 py-2 text-xs font-mono rounded-sm text-muted-foreground">종합 관제 대시보드</div>
+        <div class="flex items-center px-2.5 py-2 text-xs font-mono rounded-sm text-muted-foreground">세금계산서 발행·추적</div>
+        <div class="flex items-center px-2.5 py-2 text-xs font-mono rounded-sm bg-secondary text-foreground font-bold">주방 설비 도면 에디터</div>
+      </nav>
+    </aside>
+    <main class="flex-1 overflow-y-auto bg-background">
+      <div class="p-6 space-y-4 max-w-[1560px] w-full mx-auto">
+
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <svg width="20" height="20" viewBox="0 0 16 16" class="text-primary" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="1.5" width="13" height="13" rx="1"/></svg>
+              <h1 class="text-lg font-bold">주방 설비 2D 도면 설계 에디터</h1>
+              <span class="px-2 py-0.5 text-[11px] bg-secondary text-primary border border-border font-bold">건당 5만~20만원 외주 CAD 완전 대체</span>
+            </div>
+            <p class="text-xs text-muted-foreground mt-1">표준 설비 심볼 라이브러리 드래그앤드롭 · 치수 실시간 계산 · 버전 관리 · PDF 도면/견적서 출력 · 고객 무로그인 열람 링크</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="h-8 px-3 text-xs bg-background text-muted-foreground border border-border rounded-sm">고객 열람 링크 복사</button>
+            <button class="h-8 px-3 text-xs font-bold bg-primary text-primary-foreground rounded-sm">도면 PDF/견적서 내보내기</button>
+          </div>
+        </div>
+
+        <div class="border border-border p-3 flex items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-3">
+            <span class="text-muted-foreground text-[11px]">프로젝트: <strong class="text-foreground">을지로 화로구이 본점 주방 설계안</strong></span>
+            <div class="flex border border-border rounded-sm overflow-hidden">
+              <button class="px-2 py-1 text-[11px] bg-background text-muted-foreground">v3.1 (09-12)</button>
+              <button class="px-2 py-1 text-[11px] border-l border-border bg-primary text-primary-foreground font-bold">v3.2 (최신/현재)</button>
+            </div>
+            <span class="text-[11px] flex items-center gap-1 font-bold" style="color:var(--success)">배치된 설비: 5종 / 예상 절감 외주비: ₩150,000원</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="h-7 px-2 text-xs bg-background text-muted-foreground border border-border rounded-sm">선택 회전 (45°)</button>
+            <button class="h-7 px-2 text-xs bg-background text-destructive border border-border rounded-sm">심볼 삭제</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-4">
+          <div class="col-span-3 border border-border rounded-sm p-3 space-y-3">
+            <div class="border-b border-border pb-2 flex justify-between items-center">
+              <span class="font-bold text-xs flex items-center gap-1.5">설비 심볼 라이브러리</span><span class="text-[11px] text-muted-foreground">클릭하여 추가</span>
+            </div>
+            <div class="space-y-1.5">
+              <div class="p-2 bg-secondary border border-border rounded-sm"><div class="flex justify-between"><span class="font-bold text-xs">4구 가스레인지</span><span class="text-[11px] font-mono px-1 bg-background text-primary border border-border">GAS-4B</span></div><div class="mt-1 flex justify-between text-[11px] text-muted-foreground"><span>가열기기</span><span>1200x750</span></div></div>
+              <div class="p-2 bg-secondary border border-border rounded-sm"><div class="flex justify-between"><span class="font-bold text-xs">45Box 냉장고</span><span class="text-[11px] font-mono px-1 bg-background text-primary border border-border">REF-45B</span></div><div class="mt-1 flex justify-between text-[11px] text-muted-foreground"><span>냉장기기</span><span>1260x800</span></div></div>
+              <div class="p-2 bg-secondary border border-border rounded-sm"><div class="flex justify-between"><span class="font-bold text-xs">2조 세정대</span><span class="text-[11px] font-mono px-1 bg-background text-primary border border-border">SNK-2B</span></div><div class="mt-1 flex justify-between text-[11px] text-muted-foreground"><span>세척설비</span><span>1500x600</span></div></div>
+            </div>
+            <div class="bg-secondary p-2.5 border border-border text-[11px] text-muted-foreground">
+              <p class="font-bold text-foreground">※ 비규격 주문제작 설비 안내</p>
+              <p>도면 캔버스 내 크기 조절 핸들(Corner)을 드래그하여 임의 치수(mm)로 자유롭게 확장 가능합니다.</p>
+            </div>
+          </div>
+          <div class="col-span-9 border border-border rounded-sm p-3">
+            <div class="flex justify-between items-center text-[11px] text-muted-foreground pb-2 border-b border-border mb-2">
+              <span class="flex items-center gap-1.5 text-primary">CANVAS GRID: 1px = 10mm (기준 8,200mm x 5,200mm 주방 구역)</span>
+              <span>선택된 설비: 없음 (객체를 클릭하세요)</span>
+            </div>
+            <!-- Canvas mock: same equipment-category color convention as the real Fabric.js layer -->
+            <div class="border border-border rounded-sm relative" style="background:#111827;height:420px;">
+              <div class="absolute" style="left:40px;top:30px;width:700px;height:360px;border:2px dashed #60A5FA;"></div>
+              <div class="absolute text-white font-mono" style="left:80px;top:60px;width:140px;height:90px;background:#1E293B;border:2px solid #22D3EE;padding:4px;font-size:11px;color:#fff;">
+                <div style="font-weight:bold;">4구 가스레인지</div><div style="color:#22D3EE;position:absolute;bottom:4px;">GAS-4B</div>
+              </div>
+              <div class="absolute text-white font-mono" style="left:250px;top:60px;width:150px;height:100px;background:#1E293B;border:2px solid #60A5FA;padding:4px;font-size:11px;color:#fff;">
+                <div style="font-weight:bold;">45Box 냉장고</div><div style="color:#60A5FA;position:absolute;bottom:4px;">REF-45B</div>
+              </div>
+              <div class="absolute text-white font-mono" style="left:430px;top:60px;width:170px;height:75px;background:#1E293B;border:2px solid #34D399;padding:4px;font-size:11px;color:#fff;">
+                <div style="font-weight:bold;">2조 세정대</div><div style="color:#34D399;position:absolute;bottom:4px;">SNK-2B</div>
+              </div>
+              <div class="absolute text-white font-mono" style="left:80px;top:190px;width:210px;height:80px;background:#1E293B;border:2px solid #FBBF24;padding:4px;font-size:11px;color:#fff;">
+                <div style="font-weight:bold;">배기후드 (상부)</div><div style="color:#FBBF24;position:absolute;bottom:4px;">HOOD-EX</div>
+              </div>
+              <div class="absolute text-white font-mono" style="left:320px;top:190px;width:150px;height:75px;background:#1E293B;border:2px solid #94A3B8;padding:4px;font-size:11px;color:#fff;">
+                <div style="font-weight:bold;">중앙 조리작업대</div><div style="color:#94A3B8;position:absolute;bottom:4px;">TBL-120</div>
+              </div>
+              <div class="absolute p-2 text-[11px] space-y-1" style="left:8px;bottom:8px;background:rgba(0,0,0,.7);color:#fff;">
+                <div class="font-bold">범례 (LEGEND)</div>
+                <div class="flex items-center gap-2"><span class="w-2 h-2" style="background:#22D3EE"></span><span>가열라인</span><span class="w-2 h-2 ml-2" style="background:#60A5FA"></span><span>냉각라인</span><span class="w-2 h-2 ml-2" style="background:#34D399"></span><span>세정배수</span></div>
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+              <span>단축키: 선택 후 드래그(이동), 모서리 드래그(사이즈 조절)</span>
+              <div class="flex gap-2">
+                <button class="h-7 px-2 text-xs bg-background text-muted-foreground border border-border rounded-sm">새 버전으로 스냅샷 저장</button>
+                <button class="h-7 px-2 text-xs bg-primary text-primary-foreground font-bold rounded-sm">도면 → 견적서 자동 변환</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

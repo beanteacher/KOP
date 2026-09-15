@@ -4,6 +4,10 @@
 # Claude Code
 .claude/
 
+# 로컬 도구 캐시/세션 상태
+.impeccable/
+.playwright-mcp/
+
 # OS
 .DS_Store
 Thumbs.db

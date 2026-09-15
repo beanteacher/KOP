@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Mobile Scanner preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root { --background:#FFFFFF; --foreground:#1F2328; --primary:#0969DA; --primary-foreground:#FFFFFF;
+    --success:#1A7F37; --border:#D1D9E0; }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard',system-ui,Roboto,sans-serif;}
+  .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+</style>
+</head>
+<body>
+<div class="min-h-screen flex flex-col bg-black text-white" style="max-width:390px;margin:0 auto;">
+  <header class="p-3 flex items-center justify-between sticky top-0 z-30 border-b-2 bg-black border-white">
+    <div class="flex items-center gap-2 p-2 -ml-2">
+      <svg width="22" height="22" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 2L4 8l6 6"/></svg>
+      <span class="text-sm font-bold">사무소 콘솔 복귀</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="p-2.5 rounded border-2 bg-black text-white border-white"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 1v6l-3 8h6l-3-8V1z"/></svg></button>
+      <button class="p-2.5 rounded border-2 bg-white text-black border-white"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg></button>
+    </div>
+  </header>
+  <div class="px-4 py-2 flex items-center justify-between text-xs border-b border-white/30">
+    <span class="font-bold flex items-center gap-1.5">바코드 + 자체 QR 하이브리드 스캐너</span>
+    <span class="text-[11px] text-white/70">신입 직원 모드 ON</span>
+  </div>
+  <main class="flex-1 p-4 w-full flex flex-col justify-between space-y-4">
+    <div class="rounded-md p-4 relative min-h-[200px] flex flex-col items-center justify-center overflow-hidden border-2 bg-black border-white">
+      <div class="absolute inset-x-0 h-1 bg-white top-1/2"></div>
+      <div class="absolute top-2 left-2 w-5 h-5 border-t-4 border-l-4 border-white"></div>
+      <div class="absolute top-2 right-2 w-5 h-5 border-t-4 border-r-4 border-white"></div>
+      <div class="absolute bottom-2 left-2 w-5 h-5 border-b-4 border-l-4 border-white"></div>
+      <div class="absolute bottom-2 right-2 w-5 h-5 border-b-4 border-r-4 border-white"></div>
+      <div class="text-center z-10 space-y-1">
+        <svg width="40" height="40" viewBox="0 0 16 16" class="mx-auto" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="2" height="2"/><rect x="13" y="9" width="2" height="2"/><rect x="9" y="13" width="2" height="2"/><rect x="13" y="13" width="2" height="2"/></svg>
+        <p class="text-sm font-bold">설비 라벨 QR 또는 제조사 바코드 조준</p>
+        <p class="text-[11px] text-white/70">어두운 주방 배관 밑에서도 고감도 즉각 인식</p>
+      </div>
+    </div>
+    <div class="space-y-1.5">
+      <span class="text-[11px] block text-white/70">현장 시뮬레이션: 설비 QR 태그 스캔 테스트</span>
+      <div class="grid grid-cols-3 gap-2">
+        <button class="h-10 text-[11px] font-bold rounded-sm border-2 bg-black text-white border-white/40">4구 가스레인지</button>
+        <button class="h-10 text-[11px] font-bold rounded-sm border-2 bg-black text-white border-white/40">45Box 냉장고</button>
+        <button class="h-10 text-[11px] font-bold rounded-sm border-2 bg-black text-white border-white/40">식기세척기</button>
+      </div>
+    </div>
+    <div class="rounded p-4 space-y-3 border-2 bg-black border-white">
+      <div class="flex justify-between items-start border-b pb-2 border-white/30">
+        <div><span class="text-[11px] font-bold font-mono block">[가열기기] SKU: GAS-4B-1200</span><h2 class="text-base font-extrabold mt-0.5">업소용 4구 올스텐 가스레인지</h2></div>
+        <span class="px-2 py-1 text-xs font-black rounded-sm font-mono bg-white text-black">재고 8대</span>
+      </div>
+      <div class="grid grid-cols-1 gap-2 text-xs">
+        <div class="p-2.5 flex justify-between items-center border border-white/30"><span class="font-bold">외형 치수</span><span class="font-extrabold text-sm font-mono">1200x750x850mm</span></div>
+        <div class="p-2.5 flex justify-between items-center border border-white/30"><span class="font-bold">에너지/배관 규격</span><span class="font-extrabold text-xs font-mono">LNG 20A</span></div>
+        <div class="p-2.5 flex justify-between items-center border border-white/30"><span class="font-bold">표준 출고가</span><span class="font-extrabold text-sm font-mono">₩1,050,000원</span></div>
+      </div>
+      <div class="pt-1 space-y-2">
+        <button class="w-full h-14 font-extrabold text-base flex items-center justify-center gap-2 rounded bg-white text-black">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="8" cy="8" r="7"/><path d="M5 8l2 2 4-4"/></svg>
+          <span>현장 시공·설치 완료 등록</span>
+        </button>
+        <button class="w-full h-11 font-bold text-xs flex items-center justify-center gap-2 rounded border-2 bg-black text-white border-white/40">고객용 유지관리 매뉴얼 전달</button>
+      </div>
+    </div>
+    <button class="w-full h-12 font-bold text-xs flex items-center justify-center gap-2 rounded border-2 bg-black text-white border-white/40">모바일 영수증 촬영 화면으로 이동 →</button>
+  </main>
+</div>
+</body>
+</html>
