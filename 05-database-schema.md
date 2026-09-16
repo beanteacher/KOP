@@ -49,10 +49,16 @@
 | business_registration_number | VARCHAR(10) | NOT NULL, UNIQUE | 사업자번호, 하이픈 없이 10자리 (X-1: 중복 가입 방지) |
 | representative_name | VARCHAR(50) | NOT NULL | 대표자명 |
 | phone | VARCHAR(20) | NULL | 연락처 |
+| address | VARCHAR(200) | NULL | 사업장 주소 — 인쇄용 영수증(ReceiptSlip) 헤더에 표시 |
+| fax | VARCHAR(20) | NULL | 팩스번호 |
+| bank_name | VARCHAR(50) | NULL | 계좌 은행명 |
+| bank_account_holder | VARCHAR(50) | NULL | 예금주명 |
+| bank_account_number | VARCHAR(255) | NULL | 계좌번호 — **평문 아님**, 앱 레벨 AES-256-GCM 암호문 저장(`AesEncryptor`). `09-security.md` 저장 시 암호화 절의 예외 조항 참고 |
 | plan | VARCHAR(20) | NOT NULL, DEFAULT `'FREE'` | `FREE` / `PRO` / `BUSINESS` (`01-prd.md` §9) |
 | plan_updated_at | TIMESTAMPTZ | NULL | 마지막 플랜 변경 시각 |
 
 로그인 계정(이메일·비밀번호)은 회사가 아니라 `employees`에 귀속된다 — 가입 시 회사 1건 + 관리자 직원 1건이 함께 생성된다 (X-1).
+`address`·`fax`·`bank_*`는 가입 시 선택 입력이며 가입 후에도 관리자가 `PATCH /api/auth/company`로 수정 가능하다 — `name`·`business_registration_number`·`representative_name`은 이 경로로 바꾸지 않는다(변경하려면 별도 정책 필요, 현재 범위 밖).
 
 ---
 

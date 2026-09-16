@@ -89,7 +89,9 @@ URL 버저닝은 두지 않는다(v1 고정). 서비스 라우팅은 `04-system-
 | POST | `/api/auth/logout` | 로그인 | Refresh Token 블랙리스트 등록 |
 | POST | `/api/auth/password-reset/request` | 없음 | 재설정 메일 발송 (X-3) |
 | POST | `/api/auth/password-reset/confirm` | 없음(Reset Token) | 새 비밀번호 설정, 기존 세션 전체 무효화 |
-| GET | `/api/auth/me` | 로그인 | 내 정보 조회 |
+| GET | `/api/auth/me` | 로그인 | 내 정보 조회 — 인쇄용 영수증 헤더에 쓰는 사업자정보(사업자번호·대표자명·전화·주소) 포함 |
+| GET | `/api/auth/company` | 관리자 | 사업자 프로필 조회 — 계좌정보 포함(`/me`에는 없음) |
+| PATCH | `/api/auth/company` | 관리자 | 사업자 프로필 수정 — 전화·팩스·주소·계좌정보만(상호·사업자번호·대표자명은 불변) |
 | GET | `/api/auth/employees` | 관리자 | 직원 목록 (X-2) |
 | PATCH | `/api/auth/employees/{id}` | 관리자 | 역할·활성 상태 변경 |
 | DELETE | `/api/auth/employees/{id}` | 관리자 | 직원 삭제 (soft) |
@@ -115,6 +117,8 @@ URL 버저닝은 두지 않는다(v1 고정). 서비스 라우팅은 `04-system-
 ```
 에러: `VALIDATION_ERROR`, `CONFLICT`(`BUSINESS_NUMBER_DUPLICATE`), `CONFLICT`(`EMAIL_DUPLICATE`)
 
+요청에는 선택 필드로 `address`·`fax`·`bankName`·`bankAccountHolder`·`bankAccountNumber`도 받는다(전부 생략 가능) — 인쇄용 영수증·사업자 프로필에 쓰인다. 가입 후에도 `PATCH /api/auth/company`로 계속 수정할 수 있다.
+
 #### `POST /api/auth/login`
 ```jsonc
 // request
@@ -130,6 +134,24 @@ URL 버저닝은 두지 않는다(v1 고정). 서비스 라우팅은 `04-system-
 }
 ```
 에러: `UNAUTHORIZED`(`INVALID_CREDENTIALS`), `FORBIDDEN`(`ACCOUNT_LOCKED`, 5회 실패 시 10분)
+
+#### `PATCH /api/auth/company`
+`phone`·`fax`·`address`·`bankName`·`bankAccountHolder`·`bankAccountNumber` 전부 선택 — 요청에 없는(= `null`) 필드는 변경하지 않는다(`EmployeeDto.UpdateRequest`와 동일한 부분 수정 규칙). `name`·`businessRegistrationNumber`·`representativeName`은 이 엔드포인트로 바꿀 수 없다.
+```jsonc
+// request — 주소만 바꾸는 예시
+{ "address": "서울시 강남구 테헤란로 123" }
+```
+```jsonc
+// 200 response — bankAccountNumber는 복호화된 평문으로 내려간다(계좌정보는 관리자만 조회 가능)
+{
+  "data": {
+    "id": "8f0e...", "name": "삼진주방설비", "businessRegistrationNumber": "1234567890",
+    "representativeName": "김대표", "phone": "010-1234-5678", "fax": null,
+    "address": "서울시 강남구 테헤란로 123", "bankName": "국민은행",
+    "bankAccountHolder": "김대표", "bankAccountNumber": "123-456-789012"
+  }
+}
+```
 
 ---
 
