@@ -77,4 +77,13 @@
 - 검증: 유닛테스트 14개 GREEN + 실제 `.env`에 채워진 Client ID로 finance-service/api-gateway 재기동 후 로그인된 브라우저 세션에서 `/api/bank-accounts/authorize-url`·`/api/bank-accounts` 실제 호출해 200 확인(authorize-url에 진짜 client_id/state 포함 확인). **실제 은행 로그인(계좌 등록 완료)은 사용자 본인 인증수단이 필요해 진행 안 함** — `POST /api/bank-accounts`(토큰 교환)는 유닛테스트로만 검증됨. 사용자가 브라우저에서 직접 "계좌 연결" 플로우를 끝까지 타보고 실제 등록되는지 확인 필요.
 - **아직 없음(비범위)**: 프론트 `/settings/bank-account` 페이지(연결 버튼 + 콜백 처리), 토큰 refresh 로직(만료 시 자동 갱신), 실제 거래내역조회(`BankTransactionGateway`의 진짜 구현체 — 지금도 Mock).
 
-**다음 후보**: (a) 프론트 `/settings/bank-account` 페이지(콜백 처리 포함) — 지금 백엔드만 있고 사용자가 브라우저로 실제 연결을 끝까지 테스트할 UI가 없음. (b) (4) 거래처·세금계산서 스켈레톤. (c) 실제 `BankTransactionGateway` 구현체 + 토큰 refresh. 사용자 선호에 따라 순서 조정.
+## 진행 상황 갱신 (2026-09-18 4:29pm)
+
+**프론트 `/settings/bank-account` 페이지 + 콜백 처리 완료.** `KOP-FRONTEND` 커밋 `bfd0720`. `KOP-BACKEND`에 버그 수정 1개 추가 커밋 `ddf704a`(로컬만, push 안 함).
+
+- **실제로 발견하고 고친 버그**: state 파라미터가 "32-byte fixed random string"이어야 하는데 HMAC 자기서명 방식이라 ~107자였음 → 오픈뱅킹 테스트베드가 매번 `O0001`/`3000103`으로 거부. `OpenBankingStateSigner`를 32자 랜덤 문자열 + 서버 메모리(ConcurrentHashMap) 매핑 방식으로 재설계(1회용, TTL 10분). 한계: 인스턴스 로컬 메모리라 재시작 시 미완료 요청 무효화, 다중 인스턴스 미지원(나중에 Redis로 옮길 것 — auth-service는 이미 Redis 씀, finance-service는 아직 없음).
+- **api-gateway `/api/bank-accounts/**` 라우트 누락도 이전 턴에 발견해서 고쳐둠** (63e162a에 포함).
+- 프론트: `/settings/bank-account`(연결 상태 + 연결 버튼, 관리자 전용) + `/settings/bank-account/callback`(code/state 파싱 → 등록 → 리다이렉트, 에러 처리 포함) + 사이드바 메뉴.
+- **실제 브라우저로 전체 플로우 확인**: 연결 버튼 클릭 → 실제 오픈뱅킹 본인인증 방식 선택 화면(금융인증서/공동인증서/휴대전화 인증)까지 정상 도달. 콜백 페이지의 "코드 없음"/"state 무효" 에러 처리도 확인. **실제 은행 로그인(계좌 등록 완료)은 사용자 본인의 인증수단이 필요해 여기서 진행 안 함 — 사용자가 직접 `/settings/bank-account`에서 "오픈뱅킹으로 계좌 연결" 버튼을 눌러 끝까지 테스트해봐야 함.**
+
+**다음 후보**: (a) 사용자가 직접 계좌 연결을 실제로 완료해보고 결과 확인(제일 먼저 해볼 만함 — 방금 고친 버그가 진짜 고쳐졌는지 최종 확인). (b) (4) 거래처·세금계산서 스켈레톤. (c) 실제 `BankTransactionGateway` 구현체 + 토큰 refresh(지금도 거래내역은 Mock).
