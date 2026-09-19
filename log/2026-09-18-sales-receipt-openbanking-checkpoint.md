@@ -120,3 +120,17 @@
 - **검증**: tsc/vitest(83개)/build 통과 + 실제 브라우저로 거래처 등록→목록→상세→수정→비활성화→삭제차단(409)→재활성화, 세금계산서 작성→상세→엑셀다운로드(실제 파일)→상태전이 확인→수정발행(금액변경 반영+원본 REVISED 확인)→취소(사유·시각 표시 확인)까지 전체 플로우 확인.
 
 **다음 후보**: (a) (5) 입금-영수증 자동 매칭 + 세금계산서 자동발행 통합(원래 로드맵 마지막 단계 — `tax_invoices.source_receipt_id` 컬럼 추가 필요). (b) 실제 `BankTransactionGateway`를 real로 전환해서 진짜 거래내역 받아보기(institution-code 필요, 사용자가 아직 안 채움).
+
+## 진행 상황 갱신 (2026-09-19, 이어서)
+
+**(5) 입금-영수증 자동 매칭 + 세금계산서 자동발행 통합 완료 — 원래 로드맵의 마지막 조각.** `KOP-BACKEND` 커밋 `2dd77af`, `KOP-FRONTEND` 커밋 `08d7970`(둘 다 로컬만).
+
+- **V8 마이그레이션**: `matched_bank_transactions` 원장 테이블(자연키 `company_id, transaction_datetime, amount, printed_content`에 UNIQUE — 실거래 API가 거래 고유 ID를 안 준다는 걸 이전 세션에 이미 확인했어서 이 조합으로 멱등성 보장) + `receipts.matched_transaction_id`에 실제 FK 추가(V4 때부터 FK 없이 UUID만 있던 컬럼) + `tax_invoices.source_receipt_id`(자동발행 출처 추적용) + 인덱스.
+- **`PaymentMatchingService.matchForCompany(companyId)`**: 계좌 연결 확인 → PENDING 영수증(오래된 순) → `BankTransactionGateway.fetchTransactions`로 최근 90일 입금 조회 → 영수증별로 "금액 완전일치 + 통장인자내용에 거래처명 포함(공백/대소문자 무시) + 아직 다른 영수증에 안 쓰인" 조건을 모두 만족하는 후보가 **정확히 1건**일 때만 매칭(0건/2건 이상이면 스킵, 관리자 수동 확인에 위임). 매칭되면 원장에 기록(saveAndFlush로 같은 루프 안 재사용 방지) → `receipt.markPaid()` → 세금계산서 자동발행 호출.
+- **`TaxInvoiceAutoIssuanceService.issueIfEligible(receipt)`**: 자동 매칭·관리자 수동 확인(`markPaid`) 양쪽 경로에서 공통 호출. 거래처(`clientId`)가 없는 영수증(자유 입력 거래처)은 세금계산서를 발행할 공급받는자 정보가 없어 조용히 건너뜀(에러 아님, 정상 경로). `TaxInvoice.createFromReceipt()` 신규 팩토리로 바로 COMPLETED 상태 생성.
+- **`ReceiptService.markPaid` 시그니처 변경**: `MarkPaidRequest(transactionId)` 완전 제거(관리자가 거래 참조값을 수동 지정한다는 개념 자체가 실거래 API 현실과 안 맞아서 폐기) — 이제 `markPaid(principal, id)`만 받고, 성공 시 자동발행까지 같이 수행. `POST /api/receipts/match-payments`(관리자 전용) 신규 — 즉시 수동 매칭 트리거.
+- **`PaymentMatchingScheduler`**: `@EnableScheduling` + `@Scheduled(fixedDelayString)`로 계좌 연결된 회사마다 주기적으로 자동 매칭(기본 30분, `PAYMENT_MATCHING_FIXED_DELAY_MS`로 조정 가능). `gateway-provider=mock`인 동안은 항상 빈 목록이라 로컬에서 안전.
+- **프론트**: 영수증 목록에 관리자 전용 "입금 매칭 실행" 버튼 추가(`useMatchReceiptPayments`) — 결과를 토스트로 표시. `markReceiptPaid`/`useMarkReceiptPaid`에서 죽은 `transactionId` 파라미터 제거.
+- **검증**: 신규 유닛테스트 9개(`PaymentMatchingServiceTest` 6 + `TaxInvoiceAutoIssuanceServiceTest` 3) + 기존 `ReceiptServiceTest` 시그니처 갱신, finance-service 전체 테스트 GREEN. 실행 중이던 `finance-service`를 재기동해 V8이 실제 로컬 Postgres에 적용되고 `ddl-auto=validate`를 통과하는 것까지 확인. 프론트 tsc/vitest(83개) 통과 + 실제 브라우저에서 "입금 매칭 실행" 버튼 클릭 → `POST /api/receipts/match-payments` 200 확인(Mock 게이트웨이라 0건 매칭은 설계대로 정상).
+
+**원래 로드맵 5단계가 전부 완료됐다.** 남은 건 전부 사용자 쪽 외부 절차: (a) 실제 `BankTransactionGateway`를 real로 전환하려면 `OPENBANKING_INSTITUTION_CODE`를 사용자가 채워야 함(오픈뱅킹 개발자센터에서 확인). (b) 홈택스 bulk 업로드 xlsx가 실제 홈택스 템플릿과 바이트 단위로 맞는지 실제 업로드로 검증 필요(이전 세션 노트 그대로 유효). (c) 오픈뱅킹 실 운영 전환(이용기관 등록 심사)은 아직 시작 전.
