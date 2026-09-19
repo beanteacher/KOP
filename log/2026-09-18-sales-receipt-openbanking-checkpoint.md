@@ -87,3 +87,23 @@
 - **실제 브라우저로 전체 플로우 확인**: 연결 버튼 클릭 → 실제 오픈뱅킹 본인인증 방식 선택 화면(금융인증서/공동인증서/휴대전화 인증)까지 정상 도달. 콜백 페이지의 "코드 없음"/"state 무효" 에러 처리도 확인. **실제 은행 로그인(계좌 등록 완료)은 사용자 본인의 인증수단이 필요해 여기서 진행 안 함 — 사용자가 직접 `/settings/bank-account`에서 "오픈뱅킹으로 계좌 연결" 버튼을 눌러 끝까지 테스트해봐야 함.**
 
 **다음 후보**: (a) 사용자가 직접 계좌 연결을 실제로 완료해보고 결과 확인(제일 먼저 해볼 만함 — 방금 고친 버그가 진짜 고쳐졌는지 최종 확인). (b) (4) 거래처·세금계산서 스켈레톤. (c) 실제 `BankTransactionGateway` 구현체 + 토큰 refresh(지금도 거래내역은 Mock).
+
+## 진행 상황 갱신 (2026-09-18 밤 ~ 2026-09-19)
+
+사용자가 계좌 연결을 실제로 끝까지 테스트 완료(성공 확인). 그 다음 "다음 단계 진행하자" + "거래내역 조회 api도 진행하고" 지시로 두 트랙을 순차 진행:
+
+**실제 거래내역조회 API 완료.** `KOP-BACKEND` 커밋 `4495f08`(로컬만).
+- `OpenBankingClient.fetchTransactionHistory()`(`GET /v2.0/account/transaction_list/fin_num`, 입금만) + `refreshToken()`. 공식 API 명세서 원문을 다시 확인해 `BankTransaction` 설계를 고쳤다 — 이 API는 거래 단위 고유번호를 안 준다(이전 설계는 실재하지 않는 필드를 가정하고 있었음), 입금자명은 `print_content`(통장인자내용)를 쓴다.
+- `RealBankTransactionGateway`(`openbanking.gateway-provider=real`일 때만 활성화, 기본은 여전히 Mock) — 토큰 만료 5분 전이면 자동 refresh.
+- `OPENBANKING_INSTITUTION_CODE` 필요(Client ID와 다른 값, 거래고유번호 생성용) — 아직 사용자가 안 채움, real로 전환 시 채워야 함.
+
+**(4) 거래처·세금계산서 스켈레톤 완료** (스켈레톤 수준을 넘어 B-1~B-4 전부 동작). `KOP-BACKEND` 커밋 `135f2b3`, `a834543`(로컬만).
+- `clients`(거래처) CRUD 전부: 등록/목록(검색+상태)/상세/수정/삭제(세금계산서 이력 있으면 409, PATCH로 INACTIVE 전환이 유일한 비활성화 경로). `receipts.client_id`에 이제 실제 FK 추가(V1부터 미구현이라 없었던 것).
+- `tax_invoices`/`tax_invoice_items` 스키마 + 엔티티 — `issue_method`(EXCEL/HOMETAX_API) 컬럼 추가(문서 초안엔 없던 확장, 체크포인트 설계 반영).
+- `TaxInvoiceIssuanceGateway` 포트 + `ExcelIssuanceGateway`(Apache POI로 홈택스 bulk 업로드 xlsx 생성 — 컬럼 구성은 스펙 문서 표 그대로, **홈택스 공식 템플릿과 바이트 단위로 검증된 건 아님**, 실제 업로드해보고 조정 필요할 수 있음). `HometaxApiIssuanceGateway`(유료 플랜용)는 아직 클래스도 없음 — enum 값만 자리 있음.
+- `TaxInvoiceService`: 작성(품목 최대 16개, DRAFT/COMPLETED만)/이력조회(공급가액·세액 합계)/엑셀발행(→EXCEL_DOWNLOADED)/수정발행(새 건+원본 REVISED)/취소(사유 필수, CANCELED 건은 추가 조작 불가).
+- `common.PageMeta`에 `taxAmount` 필드 추가(기존 `totalAmount`와 같은 패턴, 다른 소비자 영향 없음 확인).
+- **검증**: 유닛테스트 20개(ClientServiceTest 9 + TaxInvoiceServiceTest 11) + ExcelIssuanceGatewayTest(생성된 xlsx를 다시 읽어 바이트 단위 검증) 전부 GREEN. 로컬 스택 실제 호출로 거래처 등록→세금계산서 작성(06-api-design.md 예제와 금액 정확히 일치)→엑셀 다운로드(실제 200+xlsx)→이력조회→거래처 삭제 차단(409)→취소까지 풀 플로우 확인.
+- **프론트는 전혀 없음** — 거래처·세금계산서 둘 다 백엔드 API만 있고 화면이 없다. `AppShell` 사이드바엔 아직 "준비중"으로 표시돼 있을 것.
+
+**다음 후보**: (a) 프론트 — 거래처 관리 화면 + 세금계산서 작성/이력조회 화면(지금 API만 있고 테스트할 화면이 없음). (b) (5) 입금-영수증 자동 매칭 + 세금계산서 자동발행 통합(마지막 단계, `tax_invoices.source_receipt_id` 컬럼도 이때 추가 예정 — 아직 없음). (c) 실제 `BankTransactionGateway`를 real로 전환해서 진짜 거래내역 받아보기(institution-code 필요).
